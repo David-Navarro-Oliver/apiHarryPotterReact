@@ -1,0 +1,113 @@
+:root {
+  color-scheme: dark;
+
+  --bg: #0b0f19;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-2: rgba(255, 255, 255, 0.1);
+
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.72);
+
+  --accent: #d4af37;
+  --accent-2: #f5d76e;
+
+  --border: rgba(255, 255, 255, 0.12);
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+
+  --radius: 16px;
+  --radius-lg: 24px;
+
+  --focus: #f5d76e;
+  --focus-ring: 0 0 0 3px rgba(245, 215, 110, 0.35);
+
+  --max-width: 1200px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  line-height: 1.5;
+  background: radial-gradient(1200px 700px at 10% 0%, rgba(212, 175, 55, 0.12), transparent 55%),
+    radial-gradient(1000px 600px at 95% 10%, rgba(245, 215, 110, 0.08), transparent 60%),
+    var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 10px;
+}
+
+.container {
+  width: min(var(--max-width), calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+.btn:active {
+  transform: translateY(0px);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--accent-2);
+  font-size: 12px;
+}
