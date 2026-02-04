@@ -1,0 +1,36 @@
+import { Link } from 'react-router-dom';
+
+export default function CharactersList({ characters }) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gap: 14,
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+      }}
+    >
+      {characters.map((c) => (
+        <article key={c.id} className="card" style={{ padding: 14 }}>
+          <img
+            src={c.imageUrl}
+            alt={c.name}
+            loading="lazy"
+            style={{ width: '100%', height: 240, objectFit: 'cover', borderRadius: 14 }}
+          />
+          <h2 style={{ margin: '12px 0 6px', fontSize: 18 }}>{c.name}</h2>
+
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {c.house ? <span className="badge">{c.house}</span> : null}
+            <span className="badge">{c.role === 'unknown' ? 'Sin rol' : c.role}</span>
+          </div>
+
+          <div style={{ marginTop: 12 }}>
+            <Link className="btn" to={`/characters/${c.id}`}>
+              Ver detalle
+            </Link>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
