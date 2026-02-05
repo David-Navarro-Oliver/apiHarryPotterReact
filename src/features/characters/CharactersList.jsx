@@ -12,7 +12,7 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
       style={{
         display: 'grid',
         gap: 14,
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(4, minmax(220px, 1fr))',
       }}
     >
       {characters.map((c) => {
