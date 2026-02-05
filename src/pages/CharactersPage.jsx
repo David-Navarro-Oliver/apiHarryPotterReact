@@ -15,6 +15,9 @@ export default function CharactersPage() {
     setRole,
     alive,
     setAlive,
+    gender,
+    setGender,
+    availableGenders,
   } = useCharacters();
 
   return (
@@ -105,6 +108,28 @@ export default function CharactersPage() {
               <option value="all">Todos</option>
               <option value="alive">Vivo</option>
               <option value="dead">Muerto</option>
+            </select>
+          </label>
+
+          <label style={{ display: 'grid', gap: 6 }}>
+            <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}>Género</span>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              aria-label="Filtrar por género"
+              style={{
+                padding: '10px 12px',
+                borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.06)',
+              }}
+            >
+              <option value="all">Todos</option>
+              {availableGenders.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
             </select>
           </label>
         </div>

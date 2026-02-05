@@ -9,6 +9,7 @@ export default function useCharacters() {
   const [house, setHouse] = useState('all');
   const [role, setRole] = useState('all');
   const [alive, setAlive] = useState('all');
+  const [gender, setGender] = useState('all');
 
   useEffect(() => {
     let isActive = true;
@@ -45,6 +46,16 @@ export default function useCharacters() {
     return Array.from(houses).sort((a, b) => a.localeCompare(b));
   }, [characters]);
 
+  const availableGenders = useMemo(() => {
+    const genders = new Set();
+
+    characters.forEach((c) => {
+      if (c.gender) genders.add(c.gender);
+    });
+
+    return Array.from(genders).sort((a, b) => a.localeCompare(b));
+  }, [characters]);
+
   const filteredCharacters = useMemo(() => {
     const q = query.trim().toLowerCase();
 
@@ -60,9 +71,11 @@ export default function useCharacters() {
           ? c.alive === true
           : c.alive === false;
 
-      return matchesQuery && matchesHouse && matchesRole && matchesAlive;
+      const matchesGender = gender === 'all' ? true : c.gender === gender;
+
+      return matchesQuery && matchesHouse && matchesRole && matchesAlive && matchesGender;
     });
-  }, [characters, query, house, role, alive]);
+  }, [characters, query, house, role, alive, gender]);
 
   return {
     characters: filteredCharacters,
@@ -77,5 +90,8 @@ export default function useCharacters() {
     setRole,
     alive,
     setAlive,
+    gender,
+    setGender,
+    availableGenders,
   };
 }
