@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { fetchCharacters } from '../../services/hpApi.js';
+import { loadFavorites, saveFavorites } from '../../utils/storage.js';
 
 export default function useCharacters() {
   const [characters, setCharacters] = useState([]);
@@ -11,6 +12,8 @@ export default function useCharacters() {
   const [alive, setAlive] = useState('all');
   const [gender, setGender] = useState('all');
   const [species, setSpecies] = useState('all');
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [favoriteIds, setFavoriteIds] = useState(() => loadFavorites());
 
   useEffect(() => {
     let isActive = true;
@@ -37,6 +40,10 @@ export default function useCharacters() {
     };
   }, []);
 
+  useEffect(() => {
+    saveFavorites(favoriteIds);
+  }, [favoriteIds]);
+
   const availableHouses = useMemo(() => {
     const houses = new Set();
     characters.forEach((c) => {
@@ -61,6 +68,18 @@ export default function useCharacters() {
     return Array.from(speciesSet).sort((a, b) => a.localeCompare(b));
   }, [characters]);
 
+  function toggleFavorite(id) {
+    const stringId = String(id);
+    setFavoriteIds((prev) => {
+      if (prev.includes(stringId)) return prev.filter((x) => x !== stringId);
+      return [...prev, stringId];
+    });
+  }
+
+  function isFavorite(id) {
+    return favoriteIds.includes(String(id));
+  }
+
   const filteredCharacters = useMemo(() => {
     const q = query.trim().toLowerCase();
 
@@ -79,11 +98,19 @@ export default function useCharacters() {
       const matchesGender = gender === 'all' ? true : c.gender === gender;
       const matchesSpecies = species === 'all' ? true : c.species === species;
 
+      const matchesFavorites = favoritesOnly ? isFavorite(c.id) : true;
+
       return (
-        matchesQuery && matchesHouse && matchesRole && matchesAlive && matchesGender && matchesSpecies
+        matchesQuery &&
+        matchesHouse &&
+        matchesRole &&
+        matchesAlive &&
+        matchesGender &&
+        matchesSpecies &&
+        matchesFavorites
       );
     });
-  }, [characters, query, house, role, alive, gender, species]);
+  }, [characters, query, house, role, alive, gender, species, favoritesOnly, favoriteIds]);
 
   return {
     characters: filteredCharacters,
@@ -104,5 +131,9 @@ export default function useCharacters() {
     species,
     setSpecies,
     availableSpecies,
+    favoritesOnly,
+    setFavoritesOnly,
+    toggleFavorite,
+    isFavorite,
   };
 }

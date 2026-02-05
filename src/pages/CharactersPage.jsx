@@ -21,6 +21,10 @@ export default function CharactersPage() {
     species,
     setSpecies,
     availableSpecies,
+    favoritesOnly,
+    setFavoritesOnly,
+    toggleFavorite,
+    isFavorite,
   } = useCharacters();
 
   return (
@@ -157,6 +161,17 @@ export default function CharactersPage() {
               ))}
             </select>
           </label>
+
+          <label style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <input
+              type="checkbox"
+              checked={favoritesOnly}
+              onChange={(e) => setFavoritesOnly(e.target.checked)}
+              aria-label="Mostrar solo favoritos"
+              style={{ width: 18, height: 18 }}
+            />
+            <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}>Solo favoritos</span>
+          </label>
         </div>
       </header>
 
@@ -180,7 +195,11 @@ export default function CharactersPage() {
       ) : null}
 
       {status === 'success' && characters.length > 0 ? (
-        <CharactersList characters={characters} />
+        <CharactersList
+          characters={characters}
+          onToggleFavorite={toggleFavorite}
+          isFavorite={isFavorite}
+        />
       ) : null}
     </section>
   );
