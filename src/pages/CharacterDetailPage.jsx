@@ -8,6 +8,36 @@ const ROLE_LABELS = {
   unknown: 'Sin rol',
 };
 
+const SPECIES_LABELS = {
+  human: 'Humano',
+  half_giant: 'Semi-gigante',
+  werewolf: 'Hombre lobo',
+  goblin: 'Duende',
+  ghost: 'Fantasma',
+  elf: 'Elfo',
+  vampire: 'Vampiro',
+  centaur: 'Centauro',
+  giant: 'Gigante',
+  house_elf: 'Elfo doméstico',
+  unknown: 'Desconocida',
+};
+
+const GENDER_LABELS = {
+  male: 'Masculino',
+  female: 'Femenino',
+  unknown: 'Desconocido',
+};
+
+function normalizeKey(value) {
+  if (!value) return 'unknown';
+  return String(value).trim().toLowerCase().replace(/\s+/g, '_');
+}
+
+function labelFrom(map, value, fallback) {
+  const key = normalizeKey(value);
+  return map[key] ?? fallback;
+}
+
 export default function CharacterDetailPage() {
   const { id } = useParams();
 
@@ -51,6 +81,15 @@ export default function CharacterDetailPage() {
   }
 
   const roleLabel = ROLE_LABELS[character.role] ?? 'Sin rol';
+
+  const speciesLabel =
+    character.species ? labelFrom(SPECIES_LABELS, character.species, character.species) : null;
+
+  const genderLabel =
+    character.gender ? labelFrom(GENDER_LABELS, character.gender, character.gender) : null;
+
+  const statusLabel =
+    character.alive === true ? 'Vivo' : character.alive === false ? 'Muerto' : 'Desconocido';
 
   return (
     <section style={{ display: 'grid', gap: 16 }}>
@@ -96,8 +135,8 @@ export default function CharacterDetailPage() {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {character.house ? <span className="badge">{character.house}</span> : null}
               <span className="badge">{roleLabel}</span>
-              {character.species ? <span className="badge">{character.species}</span> : null}
-              {character.gender ? <span className="badge">{character.gender}</span> : null}
+              {speciesLabel ? <span className="badge">{speciesLabel}</span> : null}
+              {genderLabel ? <span className="badge">{genderLabel}</span> : null}
               {character.alive === true ? <span className="badge">Vivo</span> : null}
               {character.alive === false ? <span className="badge">Muerto</span> : null}
             </div>
@@ -110,14 +149,13 @@ export default function CharacterDetailPage() {
                 <strong>Rol:</strong> {roleLabel}
               </div>
               <div>
-                <strong>Especie:</strong> {character.species || 'Desconocida'}
+                <strong>Especie:</strong> {speciesLabel || 'Desconocida'}
               </div>
               <div>
-                <strong>Género:</strong> {character.gender || 'Desconocido'}
+                <strong>Género:</strong> {genderLabel || 'Desconocido'}
               </div>
               <div>
-                <strong>Estado:</strong>{' '}
-                {character.alive === true ? 'Vivo' : character.alive === false ? 'Muerto' : 'Desconocido'}
+                <strong>Estado:</strong> {statusLabel}
               </div>
             </div>
           </div>
