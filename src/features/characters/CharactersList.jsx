@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
 
+const ROLE_LABELS = {
+  student: 'Estudiante',
+  staff: 'Profesor',
+  unknown: 'Sin rol',
+};
+
 export default function CharactersList({ characters, onToggleFavorite, isFavorite }) {
   return (
     <div
@@ -11,6 +17,7 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
     >
       {characters.map((c) => {
         const fav = isFavorite ? isFavorite(c.id) : false;
+        const roleLabel = ROLE_LABELS[c.role] ?? 'Sin rol';
 
         return (
           <article key={c.id} className="card" style={{ padding: 14, position: 'relative' }}>
@@ -44,7 +51,7 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
 
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {c.house ? <span className="badge">{c.house}</span> : null}
-              <span className="badge">{c.role === 'unknown' ? 'Sin rol' : c.role}</span>
+              <span className="badge">{roleLabel}</span>
             </div>
 
             <div style={{ marginTop: 12 }}>
