@@ -18,6 +18,9 @@ export default function CharactersPage() {
     gender,
     setGender,
     availableGenders,
+    species,
+    setSpecies,
+    availableSpecies,
   } = useCharacters();
 
   return (
@@ -128,6 +131,28 @@ export default function CharactersPage() {
               {availableGenders.map((g) => (
                 <option key={g} value={g}>
                   {g}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label style={{ display: 'grid', gap: 6 }}>
+            <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}>Especie</span>
+            <select
+              value={species}
+              onChange={(e) => setSpecies(e.target.value)}
+              aria-label="Filtrar por especie"
+              style={{
+                padding: '10px 12px',
+                borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.06)',
+              }}
+            >
+              <option value="all">Todas</option>
+              {availableSpecies.map((s) => (
+                <option key={s} value={s}>
+                  {s}
                 </option>
               ))}
             </select>
