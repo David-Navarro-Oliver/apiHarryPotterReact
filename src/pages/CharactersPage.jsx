@@ -37,7 +37,14 @@ export default function CharactersPage() {
           </p>
         </div>
 
-        <div style={{ display: 'grid', gap: 10 }}>
+        <div
+          style={{
+            display: 'grid',
+            gap: 10,
+            gridTemplateColumns: 'repeat(3, minmax(220px, 1fr))',
+            alignItems: 'end',
+          }}
+        >
           <label style={{ display: 'grid', gap: 6 }}>
             <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}>
               Buscar por nombre
@@ -162,7 +169,7 @@ export default function CharactersPage() {
             </select>
           </label>
 
-          <label style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 2px' }}>
             <input
               type="checkbox"
               checked={favoritesOnly}
