@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import useCharacterById from '../features/characters/useCharacterById.js';
+import { applyImageFallback } from '../utils/imageFallback.js';
 
 const ROLE_LABELS = {
   student: 'Estudiante',
@@ -84,6 +85,7 @@ export default function CharacterDetailPage() {
         >
           <img
             src={character.imageUrl}
+            onError={applyImageFallback}
             alt={character.name}
             style={{ width: '100%', borderRadius: 16, objectFit: 'cover', aspectRatio: '3 / 4' }}
           />

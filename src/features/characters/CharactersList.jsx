@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { applyImageFallback } from '../../utils/imageFallback.js';
 
 const ROLE_LABELS = {
   student: 'Estudiante',
@@ -26,7 +27,7 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
               className="btn"
               onClick={() => onToggleFavorite?.(c.id)}
               aria-pressed={fav}
-              aria-label={fav ? `Quitar ${c.name} de favoritos` : `Añadir ${c.name} a favoritos`}
+              aria-label={fav ? `Quitar ${c.name} de favoritos` : `Añadir ${c.name} de favoritos`}
               style={{
                 position: 'absolute',
                 top: 12,
@@ -42,6 +43,7 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
 
             <img
               src={c.imageUrl}
+              onError={applyImageFallback}
               alt={c.name}
               loading="lazy"
               style={{ width: '100%', height: 240, objectFit: 'cover', borderRadius: 14 }}
