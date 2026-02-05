@@ -11,6 +11,8 @@ export default function CharactersPage() {
     house,
     setHouse,
     availableHouses,
+    role,
+    setRole,
   } = useCharacters();
 
   return (
@@ -62,6 +64,26 @@ export default function CharactersPage() {
                   {h}
                 </option>
               ))}
+            </select>
+          </label>
+
+          <label style={{ display: 'grid', gap: 6 }}>
+            <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}>Rol</span>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              aria-label="Filtrar por rol"
+              style={{
+                padding: '10px 12px',
+                borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.06)',
+              }}
+            >
+              <option value="all">Todos</option>
+              <option value="student">Estudiante</option>
+              <option value="staff">Profesor / Staff</option>
+              <option value="unknown">Sin rol</option>
             </select>
           </label>
         </div>

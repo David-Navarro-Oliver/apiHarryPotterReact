@@ -7,6 +7,7 @@ export default function useCharacters() {
   const [errorMessage, setErrorMessage] = useState('');
   const [query, setQuery] = useState('');
   const [house, setHouse] = useState('all');
+  const [role, setRole] = useState('all');
 
   useEffect(() => {
     let isActive = true;
@@ -33,17 +34,6 @@ export default function useCharacters() {
     };
   }, []);
 
-  const filteredCharacters = useMemo(() => {
-    const q = query.trim().toLowerCase();
-
-    return characters.filter((c) => {
-      const matchesQuery = q ? c.name.toLowerCase().includes(q) : true;
-      const matchesHouse = house === 'all' ? true : c.house === house;
-
-      return matchesQuery && matchesHouse;
-    });
-  }, [characters, query, house]);
-
   const availableHouses = useMemo(() => {
     const houses = new Set();
 
@@ -54,6 +44,18 @@ export default function useCharacters() {
     return Array.from(houses).sort((a, b) => a.localeCompare(b));
   }, [characters]);
 
+  const filteredCharacters = useMemo(() => {
+    const q = query.trim().toLowerCase();
+
+    return characters.filter((c) => {
+      const matchesQuery = q ? c.name.toLowerCase().includes(q) : true;
+      const matchesHouse = house === 'all' ? true : c.house === house;
+      const matchesRole = role === 'all' ? true : c.role === role;
+
+      return matchesQuery && matchesHouse && matchesRole;
+    });
+  }, [characters, query, house, role]);
+
   return {
     characters: filteredCharacters,
     status,
@@ -63,5 +65,7 @@ export default function useCharacters() {
     house,
     setHouse,
     availableHouses,
+    role,
+    setRole,
   };
 }
