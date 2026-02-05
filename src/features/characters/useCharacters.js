@@ -8,6 +8,7 @@ export default function useCharacters() {
   const [query, setQuery] = useState('');
   const [house, setHouse] = useState('all');
   const [role, setRole] = useState('all');
+  const [alive, setAlive] = useState('all');
 
   useEffect(() => {
     let isActive = true;
@@ -52,9 +53,16 @@ export default function useCharacters() {
       const matchesHouse = house === 'all' ? true : c.house === house;
       const matchesRole = role === 'all' ? true : c.role === role;
 
-      return matchesQuery && matchesHouse && matchesRole;
+      const matchesAlive =
+        alive === 'all'
+          ? true
+          : alive === 'alive'
+          ? c.alive === true
+          : c.alive === false;
+
+      return matchesQuery && matchesHouse && matchesRole && matchesAlive;
     });
-  }, [characters, query, house, role]);
+  }, [characters, query, house, role, alive]);
 
   return {
     characters: filteredCharacters,
@@ -67,5 +75,7 @@ export default function useCharacters() {
     availableHouses,
     role,
     setRole,
+    alive,
+    setAlive,
   };
 }
