@@ -6,6 +6,7 @@ export default function useCharacters() {
   const [status, setStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [query, setQuery] = useState('');
+  const [house, setHouse] = useState('all');
 
   useEffect(() => {
     let isActive = true;
@@ -34,9 +35,24 @@ export default function useCharacters() {
 
   const filteredCharacters = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return characters;
-    return characters.filter((c) => c.name.toLowerCase().includes(q));
-  }, [characters, query]);
+
+    return characters.filter((c) => {
+      const matchesQuery = q ? c.name.toLowerCase().includes(q) : true;
+      const matchesHouse = house === 'all' ? true : c.house === house;
+
+      return matchesQuery && matchesHouse;
+    });
+  }, [characters, query, house]);
+
+  const availableHouses = useMemo(() => {
+    const houses = new Set();
+
+    characters.forEach((c) => {
+      if (c.house) houses.add(c.house);
+    });
+
+    return Array.from(houses).sort((a, b) => a.localeCompare(b));
+  }, [characters]);
 
   return {
     characters: filteredCharacters,
@@ -44,5 +60,8 @@ export default function useCharacters() {
     errorMessage,
     query,
     setQuery,
+    house,
+    setHouse,
+    availableHouses,
   };
 }

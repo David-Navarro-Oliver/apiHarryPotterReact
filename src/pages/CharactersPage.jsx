@@ -2,7 +2,16 @@ import CharactersList from '../features/characters/CharactersList.jsx';
 import useCharacters from '../features/characters/useCharacters.js';
 
 export default function CharactersPage() {
-  const { characters, status, errorMessage, query, setQuery } = useCharacters();
+  const {
+    characters,
+    status,
+    errorMessage,
+    query,
+    setQuery,
+    house,
+    setHouse,
+    availableHouses,
+  } = useCharacters();
 
   return (
     <section style={{ display: 'grid', gap: 16 }}>
@@ -14,24 +23,48 @@ export default function CharactersPage() {
           </p>
         </div>
 
-        <label style={{ display: 'grid', gap: 6 }}>
-          <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}>
-            Buscar por nombre
-          </span>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ej. Harry, Hermione, Snape..."
-            aria-label="Buscar personaje por nombre"
-            style={{
-              padding: '10px 12px',
-              borderRadius: 12,
-              border: '1px solid rgba(255,255,255,0.12)',
-              background: 'rgba(255,255,255,0.06)',
-            }}
-          />
-        </label>
+        <div style={{ display: 'grid', gap: 10 }}>
+          <label style={{ display: 'grid', gap: 6 }}>
+            <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}>
+              Buscar por nombre
+            </span>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Ej. Harry, Hermione, Snape..."
+              aria-label="Buscar personaje por nombre"
+              style={{
+                padding: '10px 12px',
+                borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.06)',
+              }}
+            />
+          </label>
+
+          <label style={{ display: 'grid', gap: 6 }}>
+            <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.72)' }}>Casa</span>
+            <select
+              value={house}
+              onChange={(e) => setHouse(e.target.value)}
+              aria-label="Filtrar por casa"
+              style={{
+                padding: '10px 12px',
+                borderRadius: 12,
+                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.06)',
+              }}
+            >
+              <option value="all">Todas</option>
+              {availableHouses.map((h) => (
+                <option key={h} value={h}>
+                  {h}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </header>
 
       {status === 'loading' ? (
@@ -49,7 +82,7 @@ export default function CharactersPage() {
 
       {status === 'success' && characters.length === 0 ? (
         <section className="card" style={{ padding: 18 }}>
-          No hay resultados para la búsqueda.
+          No hay resultados con los filtros actuales.
         </section>
       ) : null}
 
