@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { fetchCharacters } from '../../services/hpApi.js';
 import { loadFavorites, saveFavorites } from '../../utils/storage.js';
 
+const PAGE_SIZE = 12;
+
 export default function useCharacters() {
   const [characters, setCharacters] = useState([]);
   const [status, setStatus] = useState('idle');
@@ -14,6 +16,8 @@ export default function useCharacters() {
   const [species, setSpecies] = useState('all');
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [favoriteIds, setFavoriteIds] = useState(() => loadFavorites());
+
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   useEffect(() => {
     let isActive = true;
@@ -112,8 +116,27 @@ export default function useCharacters() {
     });
   }, [characters, query, house, role, alive, gender, species, favoritesOnly, favoriteIds]);
 
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [query, house, role, alive, gender, species, favoritesOnly]);
+
+  const visibleCharacters = useMemo(
+    () => filteredCharacters.slice(0, visibleCount),
+    [filteredCharacters, visibleCount]
+  );
+
+  const canLoadMore = visibleCount < filteredCharacters.length;
+
+  function loadMore() {
+    setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, filteredCharacters.length));
+  }
+
   return {
-    characters: filteredCharacters,
+    characters: visibleCharacters,
+    totalCount: filteredCharacters.length,
+    visibleCount,
+    canLoadMore,
+    loadMore,
     status,
     errorMessage,
     query,

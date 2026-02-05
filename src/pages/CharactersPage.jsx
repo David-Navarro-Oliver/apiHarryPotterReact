@@ -4,6 +4,10 @@ import useCharacters from '../features/characters/useCharacters.js';
 export default function CharactersPage() {
   const {
     characters,
+    totalCount,
+    visibleCount,
+    canLoadMore,
+    loadMore,
     status,
     errorMessage,
     query,
@@ -30,11 +34,19 @@ export default function CharactersPage() {
   return (
     <section style={{ display: 'grid', gap: 16 }}>
       <header className="card" style={{ padding: 18, display: 'grid', gap: 12 }}>
-        <div>
-          <h1 style={{ margin: 0 }}>Personajes</h1>
-          <p style={{ margin: '6px 0 0', color: 'rgba(255,255,255,0.72)' }}>
-            Explora el universo de Harry Potter.
-          </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+          <div>
+            <h1 style={{ margin: 0 }}>Personajes</h1>
+            <p style={{ margin: '6px 0 0', color: 'rgba(255,255,255,0.72)' }}>
+              Explora el universo de Harry Potter.
+            </p>
+          </div>
+
+          {status === 'success' ? (
+            <div style={{ alignSelf: 'end', color: 'rgba(255,255,255,0.72)', fontSize: 14 }}>
+              Mostrando {Math.min(visibleCount, totalCount)} de {totalCount}
+            </div>
+          ) : null}
         </div>
 
         <div
@@ -195,18 +207,34 @@ export default function CharactersPage() {
         </section>
       ) : null}
 
-      {status === 'success' && characters.length === 0 ? (
+      {status === 'success' && totalCount === 0 ? (
         <section className="card" style={{ padding: 18 }}>
           No hay resultados con los filtros actuales.
         </section>
       ) : null}
 
-      {status === 'success' && characters.length > 0 ? (
-        <CharactersList
-          characters={characters}
-          onToggleFavorite={toggleFavorite}
-          isFavorite={isFavorite}
-        />
+      {status === 'success' && totalCount > 0 ? (
+        <>
+          <CharactersList
+            characters={characters}
+            onToggleFavorite={toggleFavorite}
+            isFavorite={isFavorite}
+          />
+
+          {canLoadMore ? (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 6 }}>
+              <button
+                type="button"
+                className="btn"
+                onClick={loadMore}
+                aria-label="Cargar más personajes"
+                style={{ padding: '10px 14px', borderRadius: 999 }}
+              >
+                Cargar más
+              </button>
+            </div>
+          ) : null}
+        </>
       ) : null}
     </section>
   );
