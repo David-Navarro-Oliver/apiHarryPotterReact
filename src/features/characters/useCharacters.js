@@ -133,6 +133,7 @@ export default function useCharacters() {
 
   return {
     characters: visibleCharacters,
+    allCharacters: filteredCharacters,
     totalCount: filteredCharacters.length,
     visibleCount,
     canLoadMore,
