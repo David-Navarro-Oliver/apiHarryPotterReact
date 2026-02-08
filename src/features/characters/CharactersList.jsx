@@ -12,6 +12,40 @@ const STATUS_LABELS = {
   dead: 'Muerto',
 };
 
+const GENDER_LABELS = {
+  male: 'Hombre',
+  female: 'Mujer',
+};
+
+const SPECIES_LABELS = {
+  human: 'Humano',
+  ghost: 'Fantasma',
+  'half-giant': 'Medio gigante',
+  werewolf: 'Hombre lobo',
+  goblin: 'Duende',
+  'house-elf': 'Elfo doméstico',
+  elf: 'Elfo',
+  giant: 'Gigante',
+  vampire: 'Vampiro',
+  centaur: 'Centauro',
+  hippogriff: 'Hipogrifo',
+  poltergeist: 'Poltergeist',
+};
+
+function toKey(value) {
+  return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
+function getGenderLabel(value) {
+  const key = toKey(value);
+  return GENDER_LABELS[key] ?? value;
+}
+
+function getSpeciesLabel(value) {
+  const key = toKey(value);
+  return SPECIES_LABELS[key] ?? value;
+}
+
 export default function CharactersList({ characters, onToggleFavorite, isFavorite }) {
   return (
     <div className="cardsGrid">
@@ -22,6 +56,9 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
         const roleLabel = c.role && c.role !== 'unknown' ? ROLE_LABELS[c.role] : '';
         const statusKey = c.alive === true ? 'alive' : c.alive === false ? 'dead' : '';
         const statusLabel = statusKey ? STATUS_LABELS[statusKey] : '';
+
+        const genderLabel = c.gender ? getGenderLabel(c.gender) : '';
+        const speciesLabel = c.species ? getSpeciesLabel(c.species) : '';
 
         return (
           <article key={c.id} className="card characterCard">
@@ -52,7 +89,8 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
                   {c.house ? <span className="badge">{c.house}</span> : null}
                   {roleLabel ? <span className="badge">{roleLabel}</span> : null}
                   {statusLabel ? <span className="badge">{statusLabel}</span> : null}
-                  {c.species ? <span className="badge">{c.species}</span> : null}
+                  {genderLabel ? <span className="badge">{genderLabel}</span> : null}
+                  {speciesLabel ? <span className="badge">{speciesLabel}</span> : null}
                 </div>
               </div>
 

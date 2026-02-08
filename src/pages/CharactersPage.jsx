@@ -1,6 +1,40 @@
 import CharactersList from '../features/characters/CharactersList.jsx';
 import useCharacters from '../features/characters/useCharacters.js';
 
+const GENDER_LABELS = {
+  male: 'Hombre',
+  female: 'Mujer',
+};
+
+const SPECIES_LABELS = {
+  human: 'Humano',
+  ghost: 'Fantasma',
+  'half-giant': 'Medio gigante',
+  werewolf: 'Hombre lobo',
+  goblin: 'Duende',
+  'house-elf': 'Elfo doméstico',
+  elf: 'Elfo',
+  giant: 'Gigante',
+  vampire: 'Vampiro',
+  centaur: 'Centauro',
+  hippogriff: 'Hipogrifo',
+  poltergeist: 'Poltergeist',
+};
+
+function toKey(value) {
+  return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
+function getGenderLabel(value) {
+  const key = toKey(value);
+  return GENDER_LABELS[key] ?? value;
+}
+
+function getSpeciesLabel(value) {
+  const key = toKey(value);
+  return SPECIES_LABELS[key] ?? value;
+}
+
 export default function CharactersPage() {
   const {
     characters,
@@ -62,12 +96,7 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Casa</span>
-            <select
-              value={house}
-              onChange={(e) => setHouse(e.target.value)}
-              aria-label="Filtrar por casa"
-              className="control"
-            >
+            <select value={house} onChange={(e) => setHouse(e.target.value)} aria-label="Filtrar por casa" className="control">
               <option value="all">Todas</option>
               {availableHouses.map((h) => (
                 <option key={h} value={h}>
@@ -79,12 +108,7 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Rol</span>
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              aria-label="Filtrar por rol"
-              className="control"
-            >
+            <select value={role} onChange={(e) => setRole(e.target.value)} aria-label="Filtrar por rol" className="control">
               <option value="all">Todos</option>
               <option value="student">Estudiante</option>
               <option value="staff">Profesor / Staff</option>
@@ -94,12 +118,7 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Estado</span>
-            <select
-              value={alive}
-              onChange={(e) => setAlive(e.target.value)}
-              aria-label="Filtrar por estado vivo o muerto"
-              className="control"
-            >
+            <select value={alive} onChange={(e) => setAlive(e.target.value)} aria-label="Filtrar por estado vivo o muerto" className="control">
               <option value="all">Todos</option>
               <option value="alive">Vivo</option>
               <option value="dead">Muerto</option>
@@ -108,16 +127,11 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Género</span>
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              aria-label="Filtrar por género"
-              className="control"
-            >
+            <select value={gender} onChange={(e) => setGender(e.target.value)} aria-label="Filtrar por género" className="control">
               <option value="all">Todos</option>
               {availableGenders.map((g) => (
                 <option key={g} value={g}>
-                  {g}
+                  {getGenderLabel(g)}
                 </option>
               ))}
             </select>
@@ -125,16 +139,11 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Especie</span>
-            <select
-              value={species}
-              onChange={(e) => setSpecies(e.target.value)}
-              aria-label="Filtrar por especie"
-              className="control"
-            >
+            <select value={species} onChange={(e) => setSpecies(e.target.value)} aria-label="Filtrar por especie" className="control">
               <option value="all">Todas</option>
               {availableSpecies.map((s) => (
                 <option key={s} value={s}>
-                  {s}
+                  {getSpeciesLabel(s)}
                 </option>
               ))}
             </select>
