@@ -1,18 +1,26 @@
-import { useEffect, useMemo, useState } from 'react';
-import useCharacters from './useCharacters.js';
+import { useEffect, useState } from 'react';
 import { fetchCharacterById } from '../../services/hpApi.js';
+import { loadFavorites, saveFavorites } from '../../utils/storage.js';
 
 export default function useCharacterById(characterId) {
-  const base = useCharacters();
-
-  const [status, setStatus] = useState('loading');
+  const [status, setStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [character, setCharacter] = useState(null);
 
-  const cached = useMemo(() => {
-    if (!characterId) return null;
-    return base.allCharacters.find((c) => String(c.id) === String(characterId)) ?? null;
-  }, [base.allCharacters, characterId]);
+  const [favoriteIds, setFavoriteIds] = useState(() => loadFavorites());
+
+  useEffect(() => {
+    saveFavorites(favoriteIds);
+  }, [favoriteIds]);
+
+  function toggleFavorite(id) {
+    const stringId = String(id);
+    setFavoriteIds((prev) => (prev.includes(stringId) ? prev.filter((x) => x !== stringId) : [...prev, stringId]));
+  }
+
+  function isFavorite(id) {
+    return favoriteIds.includes(String(id));
+  }
 
   useEffect(() => {
     let isActive = true;
@@ -27,13 +35,9 @@ export default function useCharacterById(characterId) {
 
       setStatus('loading');
       setErrorMessage('');
+      setCharacter(null);
 
       try {
-        if (cached) {
-          setCharacter(cached);
-          setStatus('success');
-        }
-
         const fresh = await fetchCharacterById(characterId);
 
         if (!isActive) return;
@@ -59,12 +63,13 @@ export default function useCharacterById(characterId) {
     return () => {
       isActive = false;
     };
-  }, [characterId, cached]);
+  }, [characterId]);
 
   return {
-    ...base,
     status,
     errorMessage,
     character,
+    toggleFavorite,
+    isFavorite,
   };
 }
