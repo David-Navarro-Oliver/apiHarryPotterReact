@@ -1,24 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useMemo } from 'react';
-
-function getFavoritesCountSafe() {
-  try {
-    const keysToTry = ['favorites', 'favourites', 'hp_favorites', 'hp-favorites', 'favoriteCharacters'];
-    for (const k of keysToTry) {
-      const raw = localStorage.getItem(k);
-      if (!raw) continue;
-
-      const parsed = JSON.parse(raw);
-
-      if (Array.isArray(parsed)) return parsed.length;
-      if (parsed && typeof parsed === 'object') return Object.keys(parsed).length;
-      if (typeof parsed === 'string') return parsed.split(',').filter(Boolean).length;
-    }
-    return 0;
-  } catch {
-    return 0;
-  }
-}
+import { useEffect, useMemo, useState } from 'react';
+import useCharacters from '../features/characters/useCharacters.js';
+import { loadFavorites } from '../utils/storage.js';
+import { fetchSpells } from '../services/hpApi.js';
 
 function FeatureCard({ title, text }) {
   return (
@@ -43,7 +27,66 @@ function StatCard({ label, value }) {
 }
 
 export default function HomePage() {
-  const favCount = useMemo(() => getFavoritesCountSafe(), []);
+  const { totalCount: charactersCount, status: charactersStatus } = useCharacters();
+
+  const [spellsCount, setSpellsCount] = useState(null);
+  const [spellsStatus, setSpellsStatus] = useState('idle');
+
+  const [favoritesCount, setFavoritesCount] = useState(() => loadFavorites().length);
+
+  const charactersValue =
+    charactersStatus === 'success'
+      ? String(charactersCount)
+      : charactersStatus === 'loading'
+      ? '…'
+      : '—';
+
+  const spellsValue =
+    spellsStatus === 'success'
+      ? String(spellsCount)
+      : spellsStatus === 'loading'
+      ? '…'
+      : '—';
+
+  const favoritesValue = useMemo(() => String(favoritesCount), [favoritesCount]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadSpells() {
+      try {
+        setSpellsStatus('loading');
+        const spells = await fetchSpells();
+        if (!isActive) return;
+        setSpellsCount(Array.isArray(spells) ? spells.length : 0);
+        setSpellsStatus('success');
+      } catch {
+        if (!isActive) return;
+        setSpellsCount(null);
+        setSpellsStatus('error');
+      }
+    }
+
+    loadSpells();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    function refreshFavorites() {
+      setFavoritesCount(loadFavorites().length);
+    }
+
+    window.addEventListener('focus', refreshFavorites);
+    window.addEventListener('storage', refreshFavorites);
+
+    return () => {
+      window.removeEventListener('focus', refreshFavorites);
+      window.removeEventListener('storage', refreshFavorites);
+    };
+  }, []);
 
   return (
     <section style={{ display: 'grid', gap: 18 }}>
@@ -110,9 +153,9 @@ export default function HomePage() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
           }}
         >
-          <StatCard label="Personajes disponibles" value="—" />
-          <StatCard label="Hechizos disponibles" value="—" />
-          <StatCard label="Favoritos guardados" value={favCount} />
+          <StatCard label="Personajes disponibles" value={charactersValue} />
+          <StatCard label="Hechizos disponibles" value={spellsValue} />
+          <StatCard label="Favoritos guardados" value={favoritesValue} />
         </div>
       </section>
     </section>
