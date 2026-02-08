@@ -147,3 +147,178 @@ select {
   color: var(--accent-2);
   font-size: 12px;
 }
+.page {
+  display: grid;
+  gap: 16px;
+}
+
+.pageHeader {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.pageHeaderTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  margin: 0;
+}
+
+.pageSubtitle {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.pageMeta {
+  align-self: end;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.stateCard {
+  padding: 18px;
+}
+
+.stateMuted {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+.filtersGrid {
+  display: grid;
+  gap: 10px;
+  align-items: end;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .filtersGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .filtersGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.fieldLabel {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.control {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 2px;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.cardsGrid {
+  display: grid;
+  gap: 14px;
+  align-items: stretch;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .cardsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .cardsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.characterCard {
+  padding: 14px;
+  position: relative;
+}
+
+.favoriteBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+}
+
+.characterImage {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.characterBody {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.characterName {
+  margin: 0;
+  font-size: 18px;
+}
+
+.characterBadges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.characterActions {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.loadMoreWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.loadMoreBtn {
+  border-radius: 999px;
+}
