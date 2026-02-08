@@ -161,4 +161,75 @@ describe('useCharacters', () => {
     await waitFor(() => expect(screen.getAllByTestId('item')).toHaveLength(1));
     expect(screen.getByTestId('name-1').textContent).toBe('Harry Potter');
   });
+
+  it('sets error status when API fails', async () => {
+    fetchCharacters.mockRejectedValueOnce(new Error('Boom'));
+
+    render(<HookHarness />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('status').textContent).toBe('error');
+    });
+
+    expect(screen.getByTestId('error').textContent).not.toBe('');
+    expect(screen.queryAllByTestId('item')).toHaveLength(0);
+  });
+
+  it('loadMore increases visibleCount and canLoadMore changes', async () => {
+    const many = Array.from({ length: 25 }).map((_, i) => ({
+      id: String(i + 1),
+      name: `Character ${i + 1}`,
+      house: i % 2 === 0 ? 'Gryffindor' : 'Slytherin',
+      role: i % 3 === 0 ? 'student' : 'staff',
+      alive: i % 4 !== 0,
+      gender: 'male',
+      species: 'human',
+    }));
+
+    fetchCharacters.mockResolvedValueOnce(many);
+
+    render(<HookHarness />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('status').textContent).toBe('success');
+    });
+
+    const initialVisible = Number(screen.getByTestId('visibleCount').textContent);
+    expect(initialVisible).toBeGreaterThan(0);
+
+    const initialItems = screen.getAllByTestId('item').length;
+    expect(initialItems).toBe(initialVisible);
+
+    expect(screen.getByTestId('canLoadMore').textContent).toBe('true');
+
+    fireEvent.click(screen.getByText('loadMore'));
+
+    await waitFor(() => {
+      const nextVisible = Number(screen.getByTestId('visibleCount').textContent);
+      expect(nextVisible).toBeGreaterThan(initialVisible);
+    });
+
+    const nextItems = screen.getAllByTestId('item').length;
+    const nextVisible = Number(screen.getByTestId('visibleCount').textContent);
+    expect(nextItems).toBe(nextVisible);
+  });
+
+  it('rehydrates favorites from localStorage on init', async () => {
+    localStorage.setItem('hpFavorites', JSON.stringify(['2']));
+
+    fetchCharacters.mockResolvedValueOnce(MOCK_CHARACTERS);
+
+    render(<HookHarness />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('status').textContent).toBe('success');
+    });
+
+    expect(screen.getByTestId('fav-2').textContent).toBe('true');
+
+    fireEvent.click(screen.getByText('setFavoritesOnly'));
+    await waitFor(() => expect(screen.getAllByTestId('item')).toHaveLength(1));
+
+    expect(screen.getByTestId('name-2').textContent).toBe('Severus Snape');
+  });
 });
