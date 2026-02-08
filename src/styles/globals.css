@@ -137,6 +137,17 @@ select {
   transform: translateY(0px);
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:disabled:hover {
+  transform: none;
+  border-color: var(--border);
+}
+
 .btnFull {
   width: 100%;
 }
@@ -459,4 +470,135 @@ select.control optgroup {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.spellsHeaderTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.spellsControls {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  align-items: end;
+}
+
+@media (min-width: 640px) {
+  .spellsControls {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.spellsClearBtn {
+  height: 42px;
+}
+
+.spellsStatusLine {
+  min-height: 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.spellsGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .spellsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .spellsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .spellsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.spellCard {
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-height: 120px;
+}
+
+.spellLabel {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.spellName {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--accent-2);
+}
+
+.spellDescription {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.spellDescriptionEmpty {
+  color: var(--muted);
+}
+
+.spellsSkeleton {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .spellsSkeleton {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .spellsSkeleton {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .spellsSkeleton {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.spellsSkeletonItem {
+  height: 120px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.spellsErrorActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
 }
