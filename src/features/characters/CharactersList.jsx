@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import { applyImageFallback } from '../../utils/imageFallback.js';
+import placeholderCharacter from '../../assets/placeholder-character.jpg';
 
 const ROLE_LABELS = {
   student: 'Estudiante',
   staff: 'Profesor',
-  unknown: 'Sin rol',
+};
+
+const STATUS_LABELS = {
+  alive: 'Vivo',
+  dead: 'Muerto',
 };
 
 export default function CharactersList({ characters, onToggleFavorite, isFavorite }) {
@@ -12,13 +17,17 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
     <div className="cardsGrid">
       {characters.map((c) => {
         const fav = isFavorite ? isFavorite(c.id) : false;
-        const roleLabel = ROLE_LABELS[c.role] ?? 'Sin rol';
+        const imageSrc = c.imageUrl ? c.imageUrl : placeholderCharacter;
+
+        const roleLabel = c.role && c.role !== 'unknown' ? ROLE_LABELS[c.role] : '';
+        const statusKey = c.alive === true ? 'alive' : c.alive === false ? 'dead' : '';
+        const statusLabel = statusKey ? STATUS_LABELS[statusKey] : '';
 
         return (
           <article key={c.id} className="card characterCard">
             <button
               type="button"
-              className="btn favoriteBtn"
+              className={`btn favoriteBtn ${fav ? 'favoriteBtnActive' : ''}`}
               onClick={() => onToggleFavorite?.(c.id)}
               aria-pressed={fav}
               aria-label={fav ? `Quitar ${c.name} de favoritos` : `Añadir ${c.name} de favoritos`}
@@ -27,7 +36,7 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
             </button>
 
             <img
-              src={c.imageUrl}
+              src={imageSrc}
               onError={applyImageFallback}
               alt={c.name}
               loading="lazy"
@@ -35,15 +44,20 @@ export default function CharactersList({ characters, onToggleFavorite, isFavorit
             />
 
             <div className="characterBody">
-              <h2 className="characterName">{c.name}</h2>
+              <div className="characterText">
+                <h2 className="characterName">{c.name}</h2>
+                {c.school ? <p className="characterSchool">{c.school}</p> : null}
 
-              <div className="characterBadges">
-                {c.house ? <span className="badge">{c.house}</span> : null}
-                <span className="badge">{roleLabel}</span>
+                <div className="characterBadges">
+                  {c.house ? <span className="badge">{c.house}</span> : null}
+                  {roleLabel ? <span className="badge">{roleLabel}</span> : null}
+                  {statusLabel ? <span className="badge">{statusLabel}</span> : null}
+                  {c.species ? <span className="badge">{c.species}</span> : null}
+                </div>
               </div>
 
               <div className="characterActions">
-                <Link className="btn" to={`/characters/${c.id}`}>
+                <Link className="btn btnFull" to={`/characters/${c.id}`}>
                   Ver detalle
                 </Link>
               </div>

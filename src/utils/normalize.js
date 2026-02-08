@@ -1,4 +1,4 @@
-const FALLBACK_IMAGE = 'https://via.placeholder.com/600x800.png?text=Enciclopedia+Magica';
+const FALLBACK_IMAGE = '';
 
 export function normalizeCharacter(raw) {
   const id = raw?.id ? String(raw.id) : crypto.randomUUID();
@@ -13,9 +13,9 @@ export function normalizeCharacter(raw) {
   const hogwartsStaff = Boolean(raw?.hogwartsStaff);
 
   const role = hogwartsStudent ? 'student' : hogwartsStaff ? 'staff' : 'unknown';
+  const school = hogwartsStudent || hogwartsStaff ? 'Hogwarts' : '';
 
-  const imageUrl =
-    typeof raw?.image === 'string' && raw.image.trim().length > 0 ? raw.image.trim() : FALLBACK_IMAGE;
+  const imageUrl = typeof raw?.image === 'string' && raw.image.trim().length > 0 ? raw.image.trim() : FALLBACK_IMAGE;
 
   return {
     id,
@@ -25,6 +25,7 @@ export function normalizeCharacter(raw) {
     species,
     alive,
     role,
+    school,
     hogwartsStudent,
     hogwartsStaff,
     imageUrl,

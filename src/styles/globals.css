@@ -137,6 +137,10 @@ select {
   transform: translateY(0px);
 }
 
+.btnFull {
+  width: 100%;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -147,6 +151,7 @@ select {
   color: var(--accent-2);
   font-size: 12px;
 }
+
 .page {
   display: grid;
   gap: 16px;
@@ -269,35 +274,57 @@ select {
 }
 
 .characterCard {
-  padding: 14px;
+  padding: 12px;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .favoriteBtn {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 8px 10px;
+  top: 10px;
+  right: 10px;
+  padding: 6px 10px;
   border-radius: 999px;
+}
+
+.favoriteBtnActive {
+  border-color: rgba(212, 175, 55, 0.6);
+  background: rgba(212, 175, 55, 0.12);
 }
 
 .characterImage {
   width: 100%;
-  height: 240px;
+  height: 220px;
   object-fit: cover;
   border-radius: 14px;
 }
 
 .characterBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  flex: 1;
+}
+
+.characterText {
   display: grid;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 6px;
   text-align: center;
 }
 
 .characterName {
   margin: 0;
-  font-size: 18px;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.characterSchool {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.2;
 }
 
 .characterBadges {
@@ -305,12 +332,14 @@ select {
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 2px;
 }
 
 .characterActions {
   display: flex;
   justify-content: center;
-  margin-top: 4px;
+  width: 100%;
+  margin-top: auto;
 }
 
 .loadMoreWrap {
