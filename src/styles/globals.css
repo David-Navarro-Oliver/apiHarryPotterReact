@@ -193,7 +193,6 @@ select {
   margin-top: 8px;
   color: var(--muted);
 }
-
 .filtersGrid {
   display: grid;
   gap: 10px;
@@ -229,6 +228,12 @@ select {
   border-radius: 12px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+select.control option,
+select.control optgroup {
+  background: #ffffff;
+  color: #111111;
 }
 
 .checkboxField {
@@ -247,7 +252,6 @@ select {
   font-size: 14px;
   color: var(--muted);
 }
-
 .cardsGrid {
   display: grid;
   gap: 14px;
@@ -272,7 +276,6 @@ select {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
-
 .characterCard {
   padding: 12px;
   position: relative;
