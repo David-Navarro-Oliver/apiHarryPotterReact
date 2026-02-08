@@ -8,7 +8,14 @@ export async function fetchCharacters() {
 
 export async function fetchCharacterById(id) {
   const { data } = await httpClient.get(`/api/character/${id}`);
-  return normalizeCharacter(data);
+
+  const raw = Array.isArray(data) ? data[0] : data;
+
+  if (!raw || typeof raw !== 'object') {
+    throw new Error('No se pudo cargar el personaje.');
+  }
+
+  return normalizeCharacter(raw);
 }
 
 export async function fetchStudents() {
