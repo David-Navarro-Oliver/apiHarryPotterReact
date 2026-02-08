@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import useCharacterById from '../features/characters/useCharacterById.js';
 import { applyImageFallback } from '../utils/imageFallback.js';
+import placeholderCharacter from '../assets/placeholder-character.jpg';
 
 const ROLE_LABELS = {
   student: 'Estudiante',
@@ -19,35 +20,36 @@ const SPECIES_LABELS = {
   centaur: 'Centauro',
   giant: 'Gigante',
   house_elf: 'Elfo doméstico',
-  unknown: 'Desconocida',
 };
 
 const GENDER_LABELS = {
   male: 'Masculino',
   female: 'Femenino',
-  unknown: 'Desconocido',
 };
 
 function normalizeKey(value) {
-  if (!value) return 'unknown';
-  return String(value).trim().toLowerCase().replace(/\s+/g, '_');
+  if (!value) return '';
+  return String(value).trim().toLowerCase().replace(/[-\s]+/g, '_');
 }
 
-function labelFrom(map, value, fallback) {
+function labelFrom(map, value) {
   const key = normalizeKey(value);
-  return map[key] ?? fallback;
+  return map[key] ?? value;
+}
+
+function hasText(value) {
+  return typeof value === 'string' && value.trim().length > 0;
 }
 
 export default function CharacterDetailPage() {
   const { id } = useParams();
-
   const { status, errorMessage, character, toggleFavorite, isFavorite } = useCharacterById(id);
 
   const fav = character ? isFavorite(character.id) : false;
 
   if (status === 'loading') {
     return (
-      <section className="card" style={{ padding: 18 }}>
+      <section className="card stateCard" aria-live="polite">
         Cargando personaje...
       </section>
     );
@@ -55,10 +57,10 @@ export default function CharacterDetailPage() {
 
   if (status === 'error') {
     return (
-      <section className="card" style={{ padding: 18 }}>
+      <section className="card stateCard" role="alert">
         <strong>Ha ocurrido un error.</strong>
-        <div style={{ marginTop: 8, color: 'rgba(255,255,255,0.72)' }}>{errorMessage}</div>
-        <div style={{ marginTop: 14 }}>
+        <div className="stateMuted">{errorMessage}</div>
+        <div className="detailTopActions">
           <Link className="btn" to="/characters">
             Volver a personajes
           </Link>
@@ -69,9 +71,9 @@ export default function CharacterDetailPage() {
 
   if (!character) {
     return (
-      <section className="card" style={{ padding: 18 }}>
+      <section className="card stateCard" aria-live="polite">
         <strong>No se encontró el personaje.</strong>
-        <div style={{ marginTop: 14 }}>
+        <div className="detailTopActions">
           <Link className="btn" to="/characters">
             Volver a personajes
           </Link>
@@ -80,84 +82,131 @@ export default function CharacterDetailPage() {
     );
   }
 
+  const imageSrc = character.imageUrl ? character.imageUrl : placeholderCharacter;
+
   const roleLabel = ROLE_LABELS[character.role] ?? 'Sin rol';
-
-  const speciesLabel =
-    character.species ? labelFrom(SPECIES_LABELS, character.species, character.species) : null;
-
-  const genderLabel =
-    character.gender ? labelFrom(GENDER_LABELS, character.gender, character.gender) : null;
-
+  const speciesLabel = hasText(character.species) ? labelFrom(SPECIES_LABELS, character.species) : '';
+  const genderLabel = hasText(character.gender) ? labelFrom(GENDER_LABELS, character.gender) : '';
   const statusLabel =
-    character.alive === true ? 'Vivo' : character.alive === false ? 'Muerto' : 'Desconocido';
+    character.alive === true ? 'Vivo' : character.alive === false ? 'Muerto' : '';
+
+  const infoItems = [
+    hasText(character.house) ? { label: 'Casa', value: character.house } : null,
+    { label: 'Rol', value: roleLabel },
+    hasText(character.school) ? { label: 'Escuela', value: character.school } : null,
+    statusLabel ? { label: 'Estado', value: statusLabel } : null,
+    speciesLabel ? { label: 'Especie', value: speciesLabel } : null,
+    genderLabel ? { label: 'Género', value: genderLabel } : null,
+    hasText(character.ancestry) ? { label: 'Linaje', value: character.ancestry } : null,
+    hasText(character.patronus) ? { label: 'Patronus', value: character.patronus } : null,
+    hasText(character.actor) ? { label: 'Actor/Actriz', value: character.actor } : null,
+    hasText(character.dateOfBirth) ? { label: 'Fecha de nacimiento', value: character.dateOfBirth } : null,
+    character.yearOfBirth !== null ? { label: 'Año de nacimiento', value: String(character.yearOfBirth) } : null,
+    hasText(character.eyeColour) ? { label: 'Color de ojos', value: character.eyeColour } : null,
+    hasText(character.hairColour) ? { label: 'Color de pelo', value: character.hairColour } : null,
+  ].filter(Boolean);
+
+  const wand = character.wand;
+  const wandItems = wand
+    ? [
+        hasText(wand.wood) ? { label: 'Madera', value: wand.wood } : null,
+        hasText(wand.core) ? { label: 'Núcleo', value: wand.core } : null,
+        wand.length !== null ? { label: 'Longitud', value: `${wand.length}` } : null,
+      ].filter(Boolean)
+    : [];
+
+  const alternateNames = Array.isArray(character.alternateNames) ? character.alternateNames : [];
+  const alternateActors = Array.isArray(character.alternateActors) ? character.alternateActors : [];
+
+  const showAliases = alternateNames.length > 0;
+  const showAltActors = alternateActors.length > 0;
+  const showWand = wandItems.length > 0;
 
   return (
-    <section style={{ display: 'grid', gap: 16 }}>
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+    <section className="detailPage">
+      <div className="detailTopActions">
         <Link className="btn" to="/characters">
           ← Volver
         </Link>
 
         <button
           type="button"
-          className="btn"
+          className={`btn ${fav ? 'favoriteBtnActive' : ''}`}
           onClick={() => toggleFavorite(character.id)}
           aria-pressed={fav}
           aria-label={fav ? `Quitar ${character.name} de favoritos` : `Añadir ${character.name} a favoritos`}
-          style={{
-            borderColor: fav ? 'rgba(212,175,55,0.6)' : 'rgba(255,255,255,0.12)',
-            background: fav ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.06)',
-          }}
         >
           {fav ? '★ Favorito' : '☆ Añadir a favoritos'}
         </button>
       </div>
 
-      <article className="card" style={{ padding: 18 }}>
-        <div
-          style={{
-            display: 'grid',
-            gap: 16,
-            gridTemplateColumns: 'minmax(220px, 320px) 1fr',
-            alignItems: 'start',
-          }}
-        >
+      <article className="card detailCard">
+        <div className="detailGrid">
           <img
-            src={character.imageUrl}
+            src={imageSrc}
             onError={applyImageFallback}
             alt={character.name}
-            style={{ width: '100%', borderRadius: 16, objectFit: 'cover', aspectRatio: '3 / 4' }}
+            className="detailImage"
           />
 
-          <div style={{ display: 'grid', gap: 10 }}>
-            <h1 style={{ margin: 0 }}>{character.name}</h1>
-
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {character.house ? <span className="badge">{character.house}</span> : null}
-              <span className="badge">{roleLabel}</span>
-              {speciesLabel ? <span className="badge">{speciesLabel}</span> : null}
-              {genderLabel ? <span className="badge">{genderLabel}</span> : null}
-              {character.alive === true ? <span className="badge">Vivo</span> : null}
-              {character.alive === false ? <span className="badge">Muerto</span> : null}
+          <div className="detailContent">
+            <div className="detailHeader">
+              <h1 className="detailTitle">{character.name}</h1>
             </div>
 
-            <div style={{ color: 'rgba(255,255,255,0.72)', lineHeight: 1.6 }}>
-              <div>
-                <strong>Casa:</strong> {character.house || 'Desconocida'}
-              </div>
-              <div>
-                <strong>Rol:</strong> {roleLabel}
-              </div>
-              <div>
-                <strong>Especie:</strong> {speciesLabel || 'Desconocida'}
-              </div>
-              <div>
-                <strong>Género:</strong> {genderLabel || 'Desconocido'}
-              </div>
-              <div>
-                <strong>Estado:</strong> {statusLabel}
-              </div>
-            </div>
+            {infoItems.length > 0 ? (
+              <section className="detailSection" aria-label="Ficha del personaje">
+                <h2 className="detailSectionTitle">Ficha del personaje</h2>
+                <dl className="detailInfoGrid">
+                  {infoItems.map((item) => (
+                    <div key={item.label} className="detailInfoItem">
+                      <dt className="detailInfoLabel">{item.label}</dt>
+                      <dd className="detailInfoValue">{item.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            ) : null}
+
+            {showWand ? (
+              <section className="detailSection" aria-label="Varita">
+                <h2 className="detailSectionTitle">Varita</h2>
+                <dl className="detailInfoGrid">
+                  {wandItems.map((item) => (
+                    <div key={item.label} className="detailInfoItem">
+                      <dt className="detailInfoLabel">{item.label}</dt>
+                      <dd className="detailInfoValue">{item.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            ) : null}
+
+            {showAliases ? (
+              <section className="detailSection" aria-label="Nombres alternativos">
+                <h2 className="detailSectionTitle">Nombres alternativos</h2>
+                <div className="detailPills">
+                  {alternateNames.map((n) => (
+                    <span key={n} className="badge">
+                      {n}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
+            {showAltActors ? (
+              <section className="detailSection" aria-label="Actores alternativos">
+                <h2 className="detailSectionTitle">Actores alternativos</h2>
+                <div className="detailPills">
+                  {alternateActors.map((n) => (
+                    <span key={n} className="badge">
+                      {n}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            ) : null}
           </div>
         </div>
       </article>

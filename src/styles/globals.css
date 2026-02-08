@@ -193,6 +193,7 @@ select {
   margin-top: 8px;
   color: var(--muted);
 }
+
 .filtersGrid {
   display: grid;
   gap: 10px;
@@ -230,6 +231,7 @@ select {
   background: rgba(255, 255, 255, 0.06);
   color: var(--text);
 }
+
 select.control option,
 select.control optgroup {
   background: #ffffff;
@@ -252,6 +254,7 @@ select.control optgroup {
   font-size: 14px;
   color: var(--muted);
 }
+
 .cardsGrid {
   display: grid;
   gap: 14px;
@@ -276,6 +279,7 @@ select.control optgroup {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
 .characterCard {
   padding: 12px;
   position: relative;
@@ -353,4 +357,106 @@ select.control optgroup {
 
 .loadMoreBtn {
   border-radius: 999px;
+}
+
+.detailPage {
+  display: grid;
+  gap: 16px;
+}
+
+.detailTopActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detailCard {
+  padding: 18px;
+}
+
+.detailGrid {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .detailGrid {
+    grid-template-columns: minmax(240px, 340px) 1fr;
+  }
+}
+
+.detailImage {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  aspect-ratio: 3 / 4;
+}
+
+.detailContent {
+  display: grid;
+  gap: 16px;
+}
+
+.detailHeader {
+  display: grid;
+  gap: 10px;
+}
+
+.detailTitle {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.detailSection {
+  display: grid;
+  gap: 10px;
+}
+
+.detailSectionTitle {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.detailInfoGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .detailInfoGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.detailInfoItem {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.detailInfoLabel {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.detailInfoValue {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.detailPills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
