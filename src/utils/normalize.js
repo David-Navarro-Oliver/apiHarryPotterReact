@@ -1,13 +1,42 @@
 const FALLBACK_IMAGE = '';
 
+function cleanString(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function cleanNumber(value) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
+function cleanArray(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((v) => cleanString(v))
+    .filter((v) => v.length > 0);
+}
+
+function cleanBoolean(value) {
+  return typeof value === 'boolean' ? value : null;
+}
+
+function normalizeWand(rawWand) {
+  const wood = cleanString(rawWand?.wood);
+  const core = cleanString(rawWand?.core);
+  const length = cleanNumber(rawWand?.length);
+
+  const hasAny = wood.length > 0 || core.length > 0 || length !== null;
+
+  return hasAny ? { wood, core, length } : null;
+}
+
 export function normalizeCharacter(raw) {
   const id = raw?.id ? String(raw.id) : crypto.randomUUID();
 
-  const name = typeof raw?.name === 'string' ? raw.name.trim() : 'Desconocido';
-  const house = typeof raw?.house === 'string' ? raw.house.trim() : '';
-  const gender = typeof raw?.gender === 'string' ? raw.gender.trim() : '';
-  const species = typeof raw?.species === 'string' ? raw.species.trim() : '';
-  const alive = typeof raw?.alive === 'boolean' ? raw.alive : null;
+  const name = cleanString(raw?.name) || 'Desconocido';
+  const house = cleanString(raw?.house);
+  const gender = cleanString(raw?.gender);
+  const species = cleanString(raw?.species);
+  const alive = cleanBoolean(raw?.alive);
 
   const hogwartsStudent = Boolean(raw?.hogwartsStudent);
   const hogwartsStaff = Boolean(raw?.hogwartsStaff);
@@ -15,7 +44,20 @@ export function normalizeCharacter(raw) {
   const role = hogwartsStudent ? 'student' : hogwartsStaff ? 'staff' : 'unknown';
   const school = hogwartsStudent || hogwartsStaff ? 'Hogwarts' : '';
 
-  const imageUrl = typeof raw?.image === 'string' && raw.image.trim().length > 0 ? raw.image.trim() : FALLBACK_IMAGE;
+  const imageUrl = cleanString(raw?.image) || FALLBACK_IMAGE;
+
+  const actor = cleanString(raw?.actor);
+  const ancestry = cleanString(raw?.ancestry);
+  const patronus = cleanString(raw?.patronus);
+  const dateOfBirth = cleanString(raw?.dateOfBirth);
+  const yearOfBirth = typeof raw?.yearOfBirth === 'number' ? raw.yearOfBirth : null;
+  const eyeColour = cleanString(raw?.eyeColour);
+  const hairColour = cleanString(raw?.hairColour);
+
+  const alternateNames = cleanArray(raw?.alternate_names);
+  const alternateActors = cleanArray(raw?.alternate_actors);
+
+  const wand = normalizeWand(raw?.wand);
 
   return {
     id,
@@ -29,13 +71,23 @@ export function normalizeCharacter(raw) {
     hogwartsStudent,
     hogwartsStaff,
     imageUrl,
+    actor,
+    ancestry,
+    patronus,
+    dateOfBirth,
+    yearOfBirth,
+    eyeColour,
+    hairColour,
+    alternateNames,
+    alternateActors,
+    wand,
   };
 }
 
 export function normalizeSpell(raw) {
   const id = raw?.id ? String(raw.id) : crypto.randomUUID();
-  const name = typeof raw?.name === 'string' ? raw.name.trim() : 'Hechizo';
-  const description = typeof raw?.description === 'string' ? raw.description.trim() : '';
+  const name = cleanString(raw?.name) || 'Hechizo';
+  const description = cleanString(raw?.description);
 
   return { id, name, description };
 }
