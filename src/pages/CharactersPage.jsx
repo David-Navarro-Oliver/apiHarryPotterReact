@@ -96,7 +96,12 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Casa</span>
-            <select value={house} onChange={(e) => setHouse(e.target.value)} aria-label="Filtrar por casa" className="control">
+            <select
+              value={house}
+              onChange={(e) => setHouse(e.target.value)}
+              aria-label="Filtrar por casa"
+              className="control"
+            >
               <option value="all">Todas</option>
               {availableHouses.map((h) => (
                 <option key={h} value={h}>
@@ -108,7 +113,12 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Rol</span>
-            <select value={role} onChange={(e) => setRole(e.target.value)} aria-label="Filtrar por rol" className="control">
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              aria-label="Filtrar por rol"
+              className="control"
+            >
               <option value="all">Todos</option>
               <option value="student">Estudiante</option>
               <option value="staff">Profesor / Staff</option>
@@ -118,7 +128,12 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Estado</span>
-            <select value={alive} onChange={(e) => setAlive(e.target.value)} aria-label="Filtrar por estado vivo o muerto" className="control">
+            <select
+              value={alive}
+              onChange={(e) => setAlive(e.target.value)}
+              aria-label="Filtrar por estado vivo o muerto"
+              className="control"
+            >
               <option value="all">Todos</option>
               <option value="alive">Vivo</option>
               <option value="dead">Muerto</option>
@@ -127,7 +142,12 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Género</span>
-            <select value={gender} onChange={(e) => setGender(e.target.value)} aria-label="Filtrar por género" className="control">
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              aria-label="Filtrar por género"
+              className="control"
+            >
               <option value="all">Todos</option>
               {availableGenders.map((g) => (
                 <option key={g} value={g}>
@@ -139,7 +159,12 @@ export default function CharactersPage() {
 
           <label className="field">
             <span className="fieldLabel">Especie</span>
-            <select value={species} onChange={(e) => setSpecies(e.target.value)} aria-label="Filtrar por especie" className="control">
+            <select
+              value={species}
+              onChange={(e) => setSpecies(e.target.value)}
+              aria-label="Filtrar por especie"
+              className="control"
+            >
               <option value="all">Todas</option>
               {availableSpecies.map((s) => (
                 <option key={s} value={s}>
@@ -183,11 +208,20 @@ export default function CharactersPage() {
 
       {status === 'success' && totalCount > 0 ? (
         <>
-          <CharactersList characters={characters} onToggleFavorite={toggleFavorite} isFavorite={isFavorite} />
+          <CharactersList
+            characters={characters}
+            onToggleFavorite={toggleFavorite}
+            isFavorite={isFavorite}
+          />
 
           {canLoadMore ? (
             <div className="loadMoreWrap">
-              <button type="button" className="btn loadMoreBtn" onClick={loadMore} aria-label="Cargar más personajes">
+              <button
+                type="button"
+                className="btn loadMoreBtn"
+                onClick={loadMore}
+                aria-label="Cargar más personajes"
+              >
                 Cargar más
               </button>
             </div>

@@ -2,8 +2,17 @@ import SpellsList from '../features/spells/SpellsList.jsx';
 import useSpells from '../features/spells/useSpells.js';
 
 export default function SpellsPage() {
-  const { filtered, query, setQuery, clearQuery, canClear, status, errorMessage, totalCount, shownCount } =
-    useSpells();
+  const {
+    filtered,
+    query,
+    setQuery,
+    clearQuery,
+    canClear,
+    status,
+    errorMessage,
+    totalCount,
+    shownCount,
+  } = useSpells();
 
   return (
     <section className="page">
@@ -34,7 +43,12 @@ export default function SpellsPage() {
             />
           </label>
 
-          <button type="button" className="btn spellsClearBtn" onClick={clearQuery} disabled={!canClear}>
+          <button
+            type="button"
+            className="btn spellsClearBtn"
+            onClick={clearQuery}
+            disabled={!canClear}
+          >
             Limpiar
           </button>
         </div>
@@ -43,8 +57,12 @@ export default function SpellsPage() {
           {status === 'loading' ? 'Cargando hechizos…' : null}
           {status === 'error' ? errorMessage : null}
           {status === 'success' && totalCount === 0 ? 'La API no devolvió hechizos.' : null}
-          {status === 'success' && totalCount > 0 && shownCount === 0 ? 'No hay resultados para esa búsqueda.' : null}
-          {status === 'success' && totalCount > 0 && shownCount > 0 ? `Mostrando ${shownCount} hechizos.` : null}
+          {status === 'success' && totalCount > 0 && shownCount === 0
+            ? 'No hay resultados para esa búsqueda.'
+            : null}
+          {status === 'success' && totalCount > 0 && shownCount > 0
+            ? `Mostrando ${shownCount} hechizos.`
+            : null}
         </div>
       </header>
 

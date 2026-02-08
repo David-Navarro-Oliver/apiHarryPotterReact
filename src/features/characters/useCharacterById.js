@@ -15,7 +15,9 @@ export default function useCharacterById(characterId) {
 
   function toggleFavorite(id) {
     const stringId = String(id);
-    setFavoriteIds((prev) => (prev.includes(stringId) ? prev.filter((x) => x !== stringId) : [...prev, stringId]));
+    setFavoriteIds((prev) =>
+      prev.includes(stringId) ? prev.filter((x) => x !== stringId) : [...prev, stringId]
+    );
   }
 
   function isFavorite(id) {

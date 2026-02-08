@@ -29,7 +29,10 @@ const GENDER_LABELS = {
 
 function normalizeKey(value) {
   if (!value) return '';
-  return String(value).trim().toLowerCase().replace(/[-\s]+/g, '_');
+  return String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[-\s]+/g, '_');
 }
 
 function labelFrom(map, value) {
@@ -85,10 +88,11 @@ export default function CharacterDetailPage() {
   const imageSrc = character.imageUrl ? character.imageUrl : placeholderCharacter;
 
   const roleLabel = ROLE_LABELS[character.role] ?? 'Sin rol';
-  const speciesLabel = hasText(character.species) ? labelFrom(SPECIES_LABELS, character.species) : '';
+  const speciesLabel = hasText(character.species)
+    ? labelFrom(SPECIES_LABELS, character.species)
+    : '';
   const genderLabel = hasText(character.gender) ? labelFrom(GENDER_LABELS, character.gender) : '';
-  const statusLabel =
-    character.alive === true ? 'Vivo' : character.alive === false ? 'Muerto' : '';
+  const statusLabel = character.alive === true ? 'Vivo' : character.alive === false ? 'Muerto' : '';
 
   const infoItems = [
     hasText(character.house) ? { label: 'Casa', value: character.house } : null,
@@ -100,8 +104,12 @@ export default function CharacterDetailPage() {
     hasText(character.ancestry) ? { label: 'Linaje', value: character.ancestry } : null,
     hasText(character.patronus) ? { label: 'Patronus', value: character.patronus } : null,
     hasText(character.actor) ? { label: 'Actor/Actriz', value: character.actor } : null,
-    hasText(character.dateOfBirth) ? { label: 'Fecha de nacimiento', value: character.dateOfBirth } : null,
-    character.yearOfBirth !== null ? { label: 'Año de nacimiento', value: String(character.yearOfBirth) } : null,
+    hasText(character.dateOfBirth)
+      ? { label: 'Fecha de nacimiento', value: character.dateOfBirth }
+      : null,
+    character.yearOfBirth !== null
+      ? { label: 'Año de nacimiento', value: String(character.yearOfBirth) }
+      : null,
     hasText(character.eyeColour) ? { label: 'Color de ojos', value: character.eyeColour } : null,
     hasText(character.hairColour) ? { label: 'Color de pelo', value: character.hairColour } : null,
   ].filter(Boolean);
@@ -134,7 +142,9 @@ export default function CharacterDetailPage() {
           className={`btn ${fav ? 'favoriteBtnActive' : ''}`}
           onClick={() => toggleFavorite(character.id)}
           aria-pressed={fav}
-          aria-label={fav ? `Quitar ${character.name} de favoritos` : `Añadir ${character.name} a favoritos`}
+          aria-label={
+            fav ? `Quitar ${character.name} de favoritos` : `Añadir ${character.name} a favoritos`
+          }
         >
           {fav ? '★ Favorito' : '☆ Añadir a favoritos'}
         </button>

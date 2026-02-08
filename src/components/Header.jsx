@@ -31,7 +31,10 @@ export default function Header() {
           Enciclopedia Mágica
         </a>
 
-        <nav aria-label="Navegación principal" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+        <nav
+          aria-label="Navegación principal"
+          style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}
+        >
           <NavLink to="/" style={getLinkStyle}>
             Inicio
           </NavLink>
@@ -47,8 +50,7 @@ export default function Header() {
         aria-hidden="true"
         style={{
           height: 1,
-          background:
-            'linear-gradient(to right, transparent, rgba(212,175,55,0.35), transparent)',
+          background: 'linear-gradient(to right, transparent, rgba(212,175,55,0.35), transparent)',
         }}
       />
     </header>

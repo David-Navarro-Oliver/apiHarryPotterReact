@@ -38,15 +38,11 @@ export default function HomePage() {
     charactersStatus === 'success'
       ? String(charactersCount)
       : charactersStatus === 'loading'
-      ? '…'
-      : '—';
+        ? '…'
+        : '—';
 
   const spellsValue =
-    spellsStatus === 'success'
-      ? String(spellsCount)
-      : spellsStatus === 'loading'
-      ? '…'
-      : '—';
+    spellsStatus === 'success' ? String(spellsCount) : spellsStatus === 'loading' ? '…' : '—';
 
   const favoritesValue = useMemo(() => String(favoritesCount), [favoritesCount]);
 
@@ -97,8 +93,17 @@ export default function HomePage() {
           </div>
 
           <div style={{ display: 'grid', gap: 8 }}>
-            <h1 style={{ margin: 0, fontSize: 34, letterSpacing: '-0.02em' }}>Enciclopedia Mágica</h1>
-            <p style={{ margin: 0, color: 'rgba(255,255,255,0.72)', maxWidth: '70ch', lineHeight: 1.7 }}>
+            <h1 style={{ margin: 0, fontSize: 34, letterSpacing: '-0.02em' }}>
+              Enciclopedia Mágica
+            </h1>
+            <p
+              style={{
+                margin: 0,
+                color: 'rgba(255,255,255,0.72)',
+                maxWidth: '70ch',
+                lineHeight: 1.7,
+              }}
+            >
               Explora personajes y hechizos con búsqueda, filtros, favoritos y un diseño accesible.
             </p>
           </div>

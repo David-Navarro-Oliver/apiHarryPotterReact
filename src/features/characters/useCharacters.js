@@ -93,11 +93,7 @@ export default function useCharacters() {
       const matchesRole = role === 'all' ? true : c.role === role;
 
       const matchesAlive =
-        alive === 'all'
-          ? true
-          : alive === 'alive'
-          ? c.alive === true
-          : c.alive === false;
+        alive === 'all' ? true : alive === 'alive' ? c.alive === true : c.alive === false;
 
       const matchesGender = gender === 'all' ? true : c.gender === gender;
       const matchesSpecies = species === 'all' ? true : c.species === species;

@@ -42,13 +42,13 @@ html {
 }
 
 html::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   z-index: -2;
   pointer-events: none;
 
-  background-image: url("/bg-runas.jpg");
+  background-image: url('/bg-runas.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -57,7 +57,7 @@ html::before {
 }
 
 html::after {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -68,7 +68,14 @@ html::after {
 
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial,
+    sans-serif;
   line-height: 1.5;
   color: var(--text);
   background: transparent;
@@ -125,7 +132,10 @@ select {
   border: 1px solid var(--border);
   background: var(--surface-2);
   cursor: pointer;
-  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+  transition:
+    transform 120ms ease,
+    background 120ms ease,
+    border-color 120ms ease;
 }
 
 .btn:hover {

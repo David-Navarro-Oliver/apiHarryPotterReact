@@ -10,9 +10,7 @@ function cleanNumber(value) {
 
 function cleanArray(value) {
   if (!Array.isArray(value)) return [];
-  return value
-    .map((v) => cleanString(v))
-    .filter((v) => v.length > 0);
+  return value.map((v) => cleanString(v)).filter((v) => v.length > 0);
 }
 
 function cleanBoolean(value) {
