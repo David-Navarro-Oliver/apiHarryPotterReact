@@ -21,38 +21,19 @@ Captura hero: pendiente.
 
 ## ✨ Funcionalidades
 
-### 🏠 Home (`/`)
-- Presentación de la aplicación
-- CTA a **Personajes** y **Hechizos**
+La aplicación permite explorar personajes y hechizos del universo Harry Potter mediante una experiencia fluida y enfocada en la usabilidad.
 
-### 🧑‍🎓 Personajes (`/characters`)
-- Grid de cards **responsive**
-- Búsqueda por nombre
-- Filtros:
-  - Casa
-  - Rol (student / staff)
-  - Vivo / muerto
-  - Género
-  - Especie
-  - Favoritos
-- Botón **Load more**
-- Favoritos persistentes
+La sección de **Personajes** ofrece un grid responsive con búsqueda por nombre y un sistema de filtros combinables que permite refinar los resultados por casa, rol, estado vital, género, especie y favoritos, sin necesidad de recargar datos desde la API. Los filtros se aplican de forma acumulativa, permitiendo búsquedas precisas incluso con grandes volúmenes de información.
 
-### 🧾 Detalle de personaje (`/characters/:id`)
-- Vista detallada del personaje seleccionado
+El sistema de **Load more** gestiona la paginación de forma local, incrementando progresivamente el número de elementos visibles sin realizar nuevas peticiones de red, mejorando el rendimiento y la experiencia de usuario.
 
-### ✨ Hechizos (`/spells`)
-- Búsqueda
-- Listado simple
+Cada personaje cuenta con una **vista de detalle** accesible mediante rutas dinámicas, donde se muestra información ampliada del personaje seleccionado.
 
-### ⭐ Favoritos
-- Guardados en `localStorage`
-- Persisten al recargar la aplicación
+La sección de **Hechizos** presenta un listado simple con búsqueda, priorizando claridad y rapidez de acceso a la información.
 
-### 📡 Estados de la aplicación
-- Loading
-- Error
-- Empty (sin resultados)
+El sistema de **favoritos** permite marcar y desmarcar personajes, almacenando la selección en `localStorage` para que persista entre sesiones y pueda utilizarse como criterio de filtrado adicional.
+
+La aplicación contempla todos los **estados relevantes de la UI**, incluyendo carga de datos, errores de red y situaciones sin resultados, mostrando siempre feedback claro al usuario.
 
 ---
 
@@ -90,30 +71,30 @@ Captura hero: pendiente.
 
 ## ♿ Accesibilidad (AA)
 
-- Contraste AA
-- Navegación por teclado
-- Focus visible
-- `alt` en imágenes
-- Labels accesibles
-- Estados loading / error / empty accesibles
+La aplicación ha sido desarrollada teniendo en cuenta criterios reales de accesibilidad, alineados con el nivel **AA**.
+
+Todas las imágenes de personajes, aunque proceden de una API externa, incluyen atributos `alt` dinámicos basados en el nombre del personaje, garantizando una correcta interpretación por lectores de pantalla. En caso de imágenes inexistentes o rotas, se aplica un sistema de *fallback* que mantiene la accesibilidad y evita contenido visual vacío.
+
+Los formularios y controles de filtrado utilizan **labels accesibles**, permitiendo una navegación clara tanto con ratón como exclusivamente con teclado. El foco es siempre visible y el flujo de tabulación resulta coherente en todas las vistas.
+
+Los estados de la aplicación (*loading*, *error* y *empty*) no dependen únicamente del color para transmitir información, sino que presentan mensajes textuales claros, mejorando la comprensión para usuarios con diversidad visual o cognitiva.
+
+La estructura general de la interfaz prioriza contraste suficiente, jerarquía visual clara y consistencia en los componentes interactivos.
 
 ---
 
 ## 🧪 Testing
 
-Tests implementados con:
-- Vitest
-- Testing Library
-- jest-dom
 
-Cobertura actual:
-- Hook `useCharacters`
-  - Carga de datos
-  - Filtros
-  - Paginación
-  - Favoritos
-  - Manejo de errores
-- Rutas principales mediante `AppRouter`
+El proyecto incluye una base de tests orientada a validar la **lógica de negocio**, no únicamente la representación visual.
+
+Se han implementado tests unitarios del hook `useCharacters`, cubriendo los casos más relevantes del comportamiento real de la aplicación: carga correcta de datos, aplicación de filtros, paginación mediante **Load more**, gestión de favoritos, persistencia en `localStorage` y manejo de errores cuando la API falla.
+
+Estos tests se ejecutan de forma aislada, sin depender de la estructura del DOM de las páginas, lo que permite validar la lógica interna de manera robusta y mantenible.
+
+Adicionalmente, se han incorporado tests de integración básicos sobre el sistema de rutas, verificando que las vistas principales se renderizan correctamente en función de la navegación del usuario.
+
+La combinación de estos tests proporciona una base sólida para detectar regresiones y demuestra un enfoque consciente hacia la calidad y fiabilidad del frontend.
 
 ---
 
