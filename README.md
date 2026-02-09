@@ -8,14 +8,14 @@ Aplicación web desarrollada con **React + Vite** que permite explorar personaje
 
 ## 🚀 Demo
 
-- GitHub: https://github.com/David-Navarro-Oliver/apiHarryPotterReact  
-- Vercel: pendiente de publicar
+- 🔗 GitHub: https://github.com/David-Navarro-Oliver/apiHarryPotterReact
+- 🚀 Live Demo: https://api-harry-potter-react.vercel.app
 
 ---
 
 ## 🖼️ Vista previa
 
-Captura hero: pendiente.
+![Hero preview](docs/images/heroReadme.png)
 
 ---
 
